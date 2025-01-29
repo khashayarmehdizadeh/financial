@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لیست هزینه‌ها</title>
+    <link rel="stylesheet" href="../static/styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>برنامه مدیریت مالی</h1>
+            <nav>
+                <a href="{{ url_for('main.index') }}">صفحه اصلی</a>
+                <a href="{{ url_for('main.add_expense') }}">افزودن هزینه</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            {% block content %}
+            <h2>لیست هزینه‌ها</h2>
+            <table class="expenses-table">
+                <thead>
+                    <tr>
+                        <th>عنوان</th>
+                        <th>مبلغ</th>
+                        <th>دسته‌بندی</th>
+                        <th>تاریخ</th>
+                        <th>حذف</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for expense in expenses %}
+                    <tr>
+                        <td>{{ expense.title }}</td>
+                        <td>{{ expense.amount }}</td>
+                        <td>{{ expense.category.name }}</td>
+                        <td>{{ expense.date.strftime('%Y-%m-%d') }}</td>
+                        <td><a href="{{ url_for('main.delete_expense', expense_id=expense.id) }}" class="delete-btn">❌</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h3>افزودن دسته‌بندی</h3>
+            <form method="POST" action="{{ url_for('main.add_category') }}" class="category-form">
+                <input type="text" name="name" placeholder="نام دسته‌بندی" required>
+                <button type="submit" class="submit-btn">افزودن</button>
+            </form>
+            {% endblock %}
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 - ساخته شده توسط khashayar</p>
+        </div>
+    </footer>
+</body>
+</html>
